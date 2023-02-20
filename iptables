@@ -1,0 +1,8 @@
+#!/bin/sh
+echo “1” >  /proc/sys/net/ipv4/ip_forward
+ifconfig eth1 down
+ifconfig eth1 up
+iptables -A FORWARD -i eth1 -j ACCEPT         # forward inbound packets
+iptables -A FORWARD -o eth1 -j ACCEPT        # forward outbound packets
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables --list
